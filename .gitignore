@@ -1,0 +1,11 @@
+# The CDC file is downloaded by each reader, so it stays out of the repository.
+California.csv
+
+# Files the tutorial asks you to create while testing the traps.
+typo-manifest.yaml
+sneaky-manifest.yaml
+
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

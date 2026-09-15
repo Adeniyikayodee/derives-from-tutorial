@@ -1,0 +1,71 @@
+# A small slice of derivation-manifest.yaml, used in the tutorial.
+schema: derives-from/0.2
+
+products:
+
+  # ---- measured: counted or surveyed directly
+  ACS.EP_POV150:
+    label: Population below 150% of the poverty line
+    measurementBasis: measured
+    derivesFrom: []
+
+  ACS.EP_UNEMP:
+    label: Unemployment rate
+    measurementBasis: measured
+    derivesFrom: []
+
+  ACS.EP_NOVEH:
+    label: Households with zero vehicles
+    measurementBasis: measured
+    derivesFrom: []
+
+  SAT.chirps_rainfall:
+    label: CHIRPS satellite rainfall
+    measurementBasis: measured
+    derivesFrom: []
+
+  NVSS.mortality:
+    label: Death certificate records
+    measurementBasis: measured
+    derivesFrom: []
+
+  # ---- built from other products
+  CENSUS_CRE.social_vulnerability:
+    label: Census Community Resilience Estimates, social vulnerability
+    measurementBasis: modelled
+    derivesFrom:
+      - {variable: ACS.EP_POV150, relation: modelled_from, confidence: documented}
+      - {variable: ACS.EP_UNEMP,  relation: modelled_from, confidence: documented}
+      - {variable: ACS.EP_NOVEH,  relation: modelled_from, confidence: documented}
+
+  FEMA_NRI.social_vulnerability:
+    label: FEMA National Risk Index, social vulnerability
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: CENSUS_CRE.social_vulnerability, relation: identity, confidence: documented}
+
+  HVRI.bric:
+    label: Baseline Resilience Indicators for Communities
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: ACS.EP_UNEMP, relation: component, confidence: documented}
+      - {variable: ACS.EP_NOVEH, relation: component, confidence: documented}
+
+  FEMA_NRI.community_resilience:
+    label: FEMA National Risk Index, community resilience
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: HVRI.bric, relation: identity, confidence: documented}
+
+  FEMA_NRI.expected_annual_loss:
+    label: FEMA National Risk Index, expected annual loss
+    measurementBasis: modelled
+    derivesFrom: []
+
+  FEMA_NRI.risk_score:
+    label: FEMA National Risk Index, overall risk score
+    measurementBasis: composite
+    derivesFrom:
+      - {variable: FEMA_NRI.expected_annual_loss, relation: component, confidence: certain}
+      - {variable: FEMA_NRI.social_vulnerability, relation: component, confidence: certain}
+      - {variable: FEMA_NRI.community_resilience, relation: component, confidence: certain}
